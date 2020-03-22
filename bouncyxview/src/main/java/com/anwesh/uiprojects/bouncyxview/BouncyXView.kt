@@ -26,3 +26,33 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawBouncyXLine(i : Int, scale : Float, size : Float, paint : Paint) {
+    val sc : Float = scale.divideScale(i, lines)
+    val sf : Float = sc.sinify()
+    val l : Float = size * (1 - sf)
+    save()
+    rotate(90f * i)
+    drawLine(0f, 0f, l, l, paint)
+    restore()
+}
+
+fun Canvas.drawBouncyX(scale : Float, size : Float, paint : Paint) {
+    for (j in 0..(lines - 1)) {
+        drawBouncyXLine(j, scale, size, paint)
+    }
+}
+
+fun Canvas.drawBXNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(w / 2, gap * (i + 1))
+    drawBouncyX(scale, size, paint)
+    restore()
+}
