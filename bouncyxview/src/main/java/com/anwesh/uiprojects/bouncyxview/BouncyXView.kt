@@ -191,6 +191,7 @@ class BouncyXView(ctx : Context) : View(ctx) {
 
         private val animator : Animator = Animator(view)
         private val bx : BouncyX = BouncyX(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
         fun render(canvas : Canvas, paint : Paint) {
             canvas.drawColor(backColor)
